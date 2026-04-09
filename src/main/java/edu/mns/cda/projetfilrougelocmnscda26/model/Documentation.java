@@ -1,7 +1,7 @@
 package edu.mns.cda.projetfilrougelocmnscda26.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.ProfileDao;
+import edu.mns.cda.projetfilrougelocmnscda26.dao.dao.DocumentationDao;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Profile {
+public class Documentation {
 
     public interface OnCreate {}
 
@@ -22,6 +22,10 @@ public class Profile {
     protected Integer id;
 
     @Column(nullable = false)
-    @JsonView(ProfileDao.class)
+    @JsonView(DocumentationDao.class)
+    protected String type;
+
+    @Column(nullable = false)
+    @JsonView(DocumentationDao.class)
     protected String libelle;
 }
