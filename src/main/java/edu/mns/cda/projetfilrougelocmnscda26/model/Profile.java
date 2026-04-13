@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,4 +26,13 @@ public class Profile {
     @Column(nullable = false)
     @JsonView(ProfileDao.class)
     protected String libelle;
+
+    @ManyToMany
+    @JoinTable(
+            name = "acceder",
+            joinColumns = @JoinColumn(name = "id_profile"),
+            inverseJoinColumns = @JoinColumn(name = "id_famille")
+    )
+    private List<FamilleMateriel> familles;
+
 }
