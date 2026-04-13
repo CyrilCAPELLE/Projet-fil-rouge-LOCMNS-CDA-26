@@ -27,12 +27,5 @@ public class Profile {
     @JsonView(ProfileDao.class)
     protected String libelle;
 
-    @ManyToMany
-    @JoinTable(
-            name = "acceder",
-            joinColumns = @JoinColumn(name = "id_profile"),
-            inverseJoinColumns = @JoinColumn(name = "id_famille")
-    )
-    private List<FamilleMateriel> familles;
 
 }

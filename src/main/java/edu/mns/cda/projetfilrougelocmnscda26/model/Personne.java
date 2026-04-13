@@ -5,6 +5,7 @@ import edu.mns.cda.projetfilrougelocmnscda26.view.PersonneView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.annotation.CreatedDate;
 
 public class Personne {
 
@@ -39,7 +40,7 @@ public class Personne {
     @JsonView
     protected String mot_de_passe;
 
-    @ManyToOne
+    @ManyToMany
     @JsonView(PersonneView.class)
     protected Profile profile;
 
