@@ -1,7 +1,7 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.dao.DocumentationDao;
+import edu.mns.cda.projetfilrougelocmnscda26.dao.DocumentationDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Documentation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

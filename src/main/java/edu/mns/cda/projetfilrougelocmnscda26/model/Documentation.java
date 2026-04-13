@@ -1,7 +1,7 @@
 package edu.mns.cda.projetfilrougelocmnscda26.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.dao.DocumentationDao;
+import edu.mns.cda.projetfilrougelocmnscda26.dao.DocumentationDao;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
