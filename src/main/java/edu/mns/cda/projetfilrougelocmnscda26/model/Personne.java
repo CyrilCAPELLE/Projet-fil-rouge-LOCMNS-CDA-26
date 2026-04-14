@@ -5,8 +5,16 @@ import edu.mns.cda.projetfilrougelocmnscda26.view.PersonneView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.data.annotation.CreatedDate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Personne {
 
     @Id

@@ -2,12 +2,20 @@ package edu.mns.cda.projetfilrougelocmnscda26.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EmpruntView;
-import edu.mns.cda.projetfilrougelocmnscda26.view.PersonneView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Emprunt {
 
     @Id
