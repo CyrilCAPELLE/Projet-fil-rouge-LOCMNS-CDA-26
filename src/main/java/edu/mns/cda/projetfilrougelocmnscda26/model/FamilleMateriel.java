@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,8 +23,11 @@ public class FamilleMateriel {
     @JsonView(FamilleMaterielView.class)
     protected Integer id;
 
-    @Column(nullable = false)
-    @NotBlank()
+    @Column(nullable = false, unique = true, length = 20)
+    @NotBlank
     @JsonView(FamilleMaterielView.class)
-    protected String libelle;
+    protected String libelleFamilleMateriel;
+
+    @ManyToMany(mappedBy = "familleMateriels")
+    protected List<Profile> profile;
 }

@@ -2,14 +2,13 @@ package edu.mns.cda.projetfilrougelocmnscda26.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.view.ComposantView;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,4 +21,15 @@ public class Composant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(ComposantView.class)
     protected Integer id;
+
+    @Column
+    @JsonView(ComposantView.class)
+    protected String caracteristique;
+
+    @ManyToMany(mappedBy = "composants")
+    protected List<Materiel> materiels;
+
+    @ManyToOne
+    @JsonView(ComposantView.class)
+    protected TypeComposant typeComposant;
 }

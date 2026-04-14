@@ -2,10 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.view.TypeComposantView;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +20,7 @@ public class TypeComposant {
     @JsonView(TypeComposantView.class)
     protected Integer id;
 
-
+    @Column
+    @JsonView(TypeComposantView.class)
+    protected String libelleTypeComposant;
 }

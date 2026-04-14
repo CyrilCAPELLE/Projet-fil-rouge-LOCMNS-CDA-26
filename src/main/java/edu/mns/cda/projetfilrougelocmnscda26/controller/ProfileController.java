@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.ProfileDao;
+import edu.mns.cda.projetfilrougelocmnscda26.view.ProfileView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Profile;
@@ -19,7 +20,7 @@ public class ProfileController {
     protected final ProfileDao profileDao;
 
     @GetMapping("/liste")
-    @JsonView(ProfileDao.class)
+    @JsonView(ProfileView.class)
     public List<Profile> getAll() {
         return profileDao.findAll();
     }
@@ -37,7 +38,7 @@ public class ProfileController {
     }
 
     @PostMapping
-    @JsonView(ProfileDao.class)
+    @JsonView(ProfileView.class)
     public ResponseEntity<Profile> create(
             @RequestBody
             @Valid

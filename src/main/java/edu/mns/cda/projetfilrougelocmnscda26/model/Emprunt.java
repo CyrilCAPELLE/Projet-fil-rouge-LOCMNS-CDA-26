@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EmpruntView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,38 +25,36 @@ public class Emprunt {
     protected Integer id;
 
     @Column(nullable = false)
-    @NotBlank()
+    @NotNull
     @JsonView(EmpruntView.class)
     protected Date dateDebut;
 
     @Column(nullable = false)
-    @NotBlank()
+    @NotNull
     @JsonView(EmpruntView.class)
     protected Date dateRetourPrevue;
 
-    @Column(nullable = false)
-    @NotBlank()
-    @JsonView(EmpruntView.class)
-    protected Date dateRetourPrevu;
-
-    @Column(nullable = false)
-    @NotBlank()
+    @Column
     @JsonView(EmpruntView.class)
     protected Date dateRetourReelle;
 
     @Column(nullable = false)
-    @NotBlank()
+    @NotNull
     @JsonView(EmpruntView.class)
     protected Date dateDemande;
 
     @Column(nullable = false)
-    @NotBlank()
+    @NotBlank
     @JsonView(EmpruntView.class)
     protected String statutDemande;
 
     @ManyToOne
     @JsonView(EmpruntView.class)
     protected Personne personne;
+
+    @ManyToOne
+    @JsonView(EmpruntView.class)
+    protected Personne traitePar;
 
     @ManyToOne
     @JsonView(EmpruntView.class)

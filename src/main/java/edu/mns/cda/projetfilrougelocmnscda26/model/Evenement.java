@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EvenementView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +25,12 @@ public class Evenement {
     protected Integer id;
 
     @Column(nullable = false)
-    @NotBlank()
+    @NotBlank
     @JsonView(EvenementView.class)
-    protected String libelle;
+    protected String libelleEvenement;
 
     @Column(nullable = false)
-    @NotBlank()
+    @NotNull
     @JsonView(EvenementView.class)
     protected Date dateEvenement;
 

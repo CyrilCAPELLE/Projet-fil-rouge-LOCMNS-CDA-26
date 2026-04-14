@@ -3,6 +3,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.DocumentationDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Documentation;
+import edu.mns.cda.projetfilrougelocmnscda26.view.DocumentationView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class DocumentationController {
     protected final DocumentationDao documentationDao;
 
     @GetMapping("/liste")
-    @JsonView(DocumentationDao.class)
+    @JsonView(DocumentationView.class)
     public List<Documentation> getAll() {
         return documentationDao.findAll();
     }
@@ -37,7 +38,7 @@ public class DocumentationController {
     }
 
     @PostMapping
-    @JsonView(DocumentationDao.class)
+    @JsonView(DocumentationView.class)
     public ResponseEntity<Documentation> create(
             @RequestBody
             @Valid
