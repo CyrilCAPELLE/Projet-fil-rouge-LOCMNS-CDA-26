@@ -23,7 +23,7 @@ public class Composant {
     @JsonView(ComposantView.class)
     protected Integer id;
 
-    @Column(columnDefinition = "TEXTE")
+    @Column(columnDefinition = "TEXT")
     @NotBlank
     @JsonView(ComposantView.class)
     protected String caracteristique;
