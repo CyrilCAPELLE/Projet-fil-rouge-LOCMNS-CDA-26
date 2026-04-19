@@ -7,7 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Documentation {
 
     public interface OnCreate {}
@@ -29,9 +33,10 @@ public class Documentation {
     @JsonView(DocumentationView.class)
     protected String titreDocument;
 
-    @Column
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
     @JsonView(DocumentationView.class)
-    protected Date dateAjout;
+    protected LocalDateTime dateAjout;
 
     @Column(nullable = false)
     @JsonView(DocumentationView.class)

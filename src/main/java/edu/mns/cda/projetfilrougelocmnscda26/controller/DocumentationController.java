@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/documentation")
 public class DocumentationController {
@@ -42,12 +43,12 @@ public class DocumentationController {
     public ResponseEntity<Documentation> create(
             @RequestBody
             @Valid
-            Documentation DocumentationToInsert) {
+            Documentation documentationToInsert) {
 
-        DocumentationToInsert.setId(null);
-        documentationDao.save(DocumentationToInsert);
+        documentationToInsert.setId(null);
+        documentationDao.save(documentationToInsert);
 
-        return new ResponseEntity<>(DocumentationToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(documentationToInsert, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
