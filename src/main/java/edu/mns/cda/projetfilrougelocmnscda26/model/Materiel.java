@@ -28,6 +28,11 @@ public class Materiel {
     @JsonView(MaterielView.class)
     protected Integer id;
 
+    @Column(nullable = false)
+    @NotBlank
+    @JsonView(MaterielView.class)
+    protected String nomMateriel;
+
     @Column(nullable = false, unique = true)
     @NotBlank
     @JsonView(MaterielView.class)

@@ -50,7 +50,6 @@ public class Personne {
 
     @Column(nullable = false, name = "mot_de_passe")
     @NotBlank(groups = {OnCreate.class}, message = "Le mot de passe ne peut pas être vide")
-    @JsonView
     protected String motDePasse;
 
     @ManyToMany

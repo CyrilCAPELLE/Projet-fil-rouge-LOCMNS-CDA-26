@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EtatView;
+import edu.mns.cda.projetfilrougelocmnscda26.view.MaterielView;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class Etat {
     protected Integer id;
 
     @Column
-    @JsonView(EtatView.class)
+    @JsonView({EtatView.class, MaterielView.class})
     protected String libelleEtat;
 
 }

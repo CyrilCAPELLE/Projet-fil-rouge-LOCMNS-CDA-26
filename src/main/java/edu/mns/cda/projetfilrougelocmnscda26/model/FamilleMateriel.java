@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.view.FamilleMaterielView;
+import edu.mns.cda.projetfilrougelocmnscda26.view.MaterielView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class FamilleMateriel {
 
     @Column(nullable = false, unique = true, length = 20)
     @NotBlank
-    @JsonView(FamilleMaterielView.class)
+    @JsonView({FamilleMaterielView.class, MaterielView.class})
     protected String libelleFamilleMateriel;
 
     @ManyToMany(mappedBy = "familleMateriels")
