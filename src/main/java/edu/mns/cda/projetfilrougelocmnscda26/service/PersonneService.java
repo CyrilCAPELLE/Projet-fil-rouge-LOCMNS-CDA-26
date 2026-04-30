@@ -3,9 +3,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.service;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.PersonneDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Personne;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
