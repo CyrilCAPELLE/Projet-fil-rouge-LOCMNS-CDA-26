@@ -1,8 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.FamilleMaterielDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.FamilleMateriel;
+import edu.mns.cda.projetfilrougelocmnscda26.service.FamilleMaterielService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.FamilleMaterielView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @RequestMapping("/famille-materiel")
 public class FamilleMaterielController {
 
-    protected final FamilleMaterielDao familleMaterielDao;
+    protected final FamilleMaterielService familleMaterielService;
 
     @GetMapping("/liste")
     @JsonView(FamilleMaterielView.class)
     public List<FamilleMateriel> getAll() {
-        return familleMaterielDao.findAll();
+        return familleMaterielService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FamilleMateriel> get(@PathVariable int id) {
 
-        Optional<FamilleMateriel> optionalFamilleMateriel = familleMaterielDao.findById(id);
+        Optional<FamilleMateriel> optionalFamilleMateriel = familleMaterielService.getById(id);
 
         if (optionalFamilleMateriel.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +46,9 @@ public class FamilleMaterielController {
             @Valid
             FamilleMateriel familleMaterielToInsert) {
 
-        familleMaterielToInsert.setId(null);
-        familleMaterielDao.save(familleMaterielToInsert);
+        FamilleMateriel familleMaterielCreate = familleMaterielService.create(familleMaterielToInsert);
 
-        return new ResponseEntity<>(familleMaterielToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(familleMaterielCreate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -59,16 +58,12 @@ public class FamilleMaterielController {
             @Valid
             FamilleMateriel familleMaterielToUpdate) {
 
-        Optional<FamilleMateriel> optionalFamilleMateriel = familleMaterielDao.findById(id);
+        Optional<FamilleMateriel> optionalFamilleMateriel = familleMaterielService.update(id, familleMaterielToUpdate);
 
         if (optionalFamilleMateriel.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
-        familleMaterielToUpdate.setId(id);
-
-        familleMaterielDao.save(familleMaterielToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,13 +71,11 @@ public class FamilleMaterielController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
-        Optional<FamilleMateriel> optionalFamilleMateriel = familleMaterielDao.findById(id);
+        boolean familleMaterielSupprimee = familleMaterielService.supprimer(id);
 
-        if (optionalFamilleMateriel.isEmpty()) {
+        if (!familleMaterielSupprimee) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        familleMaterielDao.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
