@@ -1,8 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.MaterielDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Materiel;
+import edu.mns.cda.projetfilrougelocmnscda26.service.MaterielService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.MaterielView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @RequestMapping("/materiel")
 public class MaterielController {
 
-    protected final MaterielDao materielDao;
+    protected final MaterielService materielService;
 
     @GetMapping("/liste")
     @JsonView(MaterielView.class)
     public List<Materiel> getAll() {
-        return materielDao.findAll();
+        return materielService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Materiel> get(@PathVariable int id) {
 
-        Optional<Materiel> optionalMateriel = materielDao.findById(id);
+        Optional<Materiel> optionalMateriel = materielService.getById(id);
 
         if (optionalMateriel.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +46,9 @@ public class MaterielController {
             @Valid
             Materiel materielToInsert) {
 
-        materielToInsert.setId(null);
-        materielDao.save(materielToInsert);
+        Materiel materielCreate = materielService.create(materielToInsert);
 
-        return new ResponseEntity<>(materielToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(materielCreate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -59,16 +58,12 @@ public class MaterielController {
             @Valid
             Materiel materielToUpdate) {
 
-        Optional<Materiel> optionalMateriel = materielDao.findById(id);
+        Optional<Materiel> optionalMateriel = materielService.update(id, materielToUpdate);
 
         if (optionalMateriel.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
-        materielToUpdate.setId(id);
-
-        materielDao.save(materielToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,13 +71,11 @@ public class MaterielController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
-        Optional<Materiel> optionalMateriel = materielDao.findById(id);
+        boolean materielSupprime = materielService.supprimer(id);
 
-        if (optionalMateriel.isEmpty()) {
+        if (!materielSupprime) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        materielDao.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

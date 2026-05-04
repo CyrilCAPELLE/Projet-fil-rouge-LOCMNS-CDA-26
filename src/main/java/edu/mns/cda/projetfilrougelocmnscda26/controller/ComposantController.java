@@ -1,8 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.ComposantDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Composant;
+import edu.mns.cda.projetfilrougelocmnscda26.service.ComposantService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.ComposantView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @RequestMapping("/composant")
 public class ComposantController {
 
-    protected final ComposantDao composantDao;
+    protected final ComposantService composantService;
 
     @GetMapping("/liste")
     @JsonView(ComposantView.class)
     public List<Composant> getAll() {
-        return composantDao.findAll();
+        return composantService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Composant> get(@PathVariable int id) {
 
-        Optional<Composant> optionalComposant = composantDao.findById(id);
+        Optional<Composant> optionalComposant = composantService.getById(id);
 
         if (optionalComposant.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +46,9 @@ public class ComposantController {
             @Valid
             Composant composantToInsert) {
 
-        composantToInsert.setId(null);
-        composantDao.save(composantToInsert);
+        Composant composantCreate = composantService.create(composantToInsert);
 
-        return new ResponseEntity<>(composantToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(composantCreate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -59,16 +58,12 @@ public class ComposantController {
             @Valid
             Composant composantToUpdate) {
 
-        Optional<Composant> optionalComposant = composantDao.findById(id);
+        Optional<Composant> optionalComposant = composantService.update(id, composantToUpdate);
 
         if (optionalComposant.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
-        composantToUpdate.setId(id);
-
-        composantDao.save(composantToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,13 +71,11 @@ public class ComposantController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
-        Optional<Composant> optionalComposant = composantDao.findById(id);
+        boolean composantSupprime = composantService.supprimer(id);
 
-        if (optionalComposant.isEmpty()) {
+        if (!composantSupprime) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        composantDao.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
