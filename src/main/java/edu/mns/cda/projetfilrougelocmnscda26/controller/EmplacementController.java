@@ -1,8 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.EmplacementDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Emplacement;
+import edu.mns.cda.projetfilrougelocmnscda26.service.EmplacementService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EmplacementView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @RequestMapping("/emplacement")
 public class EmplacementController {
 
-    protected final EmplacementDao emplacementDao;
+    protected final EmplacementService emplacementService;
 
     @GetMapping("/liste")
     @JsonView(EmplacementView.class)
     public List<Emplacement> getAll() {
-        return emplacementDao.findAll();
+        return emplacementService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Emplacement> get(@PathVariable int id) {
 
-        Optional<Emplacement> optionalEmplacement = emplacementDao.findById(id);
+        Optional<Emplacement> optionalEmplacement = emplacementService.getById(id);
 
         if (optionalEmplacement.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +46,9 @@ public class EmplacementController {
             @Valid
             Emplacement emplacementToInsert) {
 
-        emplacementToInsert.setId(null);
-        emplacementDao.save(emplacementToInsert);
+        Emplacement emplacementCreate = emplacementService.create(emplacementToInsert);
 
-        return new ResponseEntity<>(emplacementToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(emplacementCreate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -59,16 +58,12 @@ public class EmplacementController {
             @Valid
             Emplacement emplacementToUpdate) {
 
-        Optional<Emplacement> optionalEmplacement = emplacementDao.findById(id);
+        Optional<Emplacement> optionalEmplacement = emplacementService.update(id, emplacementToUpdate);
 
         if (optionalEmplacement.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
-        emplacementToUpdate.setId(id);
-
-        emplacementDao.save(emplacementToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,13 +71,11 @@ public class EmplacementController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
-        Optional<Emplacement> optionalEmplacement = emplacementDao.findById(id);
+        boolean emplacementSupprime = emplacementService.supprimer(id);
 
-        if (optionalEmplacement.isEmpty()) {
+        if (!emplacementSupprime) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        emplacementDao.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
