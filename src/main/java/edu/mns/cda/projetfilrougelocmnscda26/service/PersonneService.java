@@ -12,7 +12,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PersonneService {
 
-    private  final PersonneDao personneDao;
+    private final PersonneDao personneDao;
 
     public List<Personne> getAll() {
         return personneDao.findAll();
