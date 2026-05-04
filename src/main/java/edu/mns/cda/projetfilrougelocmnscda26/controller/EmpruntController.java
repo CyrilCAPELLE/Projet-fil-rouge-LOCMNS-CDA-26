@@ -1,8 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.EmpruntDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Emprunt;
+import edu.mns.cda.projetfilrougelocmnscda26.service.EmpruntService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EmpruntView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @RequestMapping("/emprunt")
 public class EmpruntController {
 
-    protected final EmpruntDao empruntDao;
+    protected final EmpruntService empruntService;
 
     @GetMapping("/liste")
     @JsonView(EmpruntView.class)
     public List<Emprunt> getAll() {
-        return empruntDao.findAll();
+        return empruntService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Emprunt> get(@PathVariable int id) {
 
-        Optional<Emprunt> optionalEmprunt = empruntDao.findById(id);
+        Optional<Emprunt> optionalEmprunt = empruntService.getById(id);
 
         if (optionalEmprunt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +46,9 @@ public class EmpruntController {
             @Valid
             Emprunt empruntToInsert) {
 
-        empruntToInsert.setId(null);
-        empruntDao.save(empruntToInsert);
+        Emprunt empruntCreate =  empruntService.create(empruntToInsert);
 
-        return new ResponseEntity<>(empruntToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(empruntCreate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -59,16 +58,12 @@ public class EmpruntController {
             @Valid
             Emprunt empruntToUpdate) {
 
-        Optional<Emprunt> optionalEmprunt = empruntDao.findById(id);
+        Optional<Emprunt> optionalEmprunt = empruntService.update(id, empruntToUpdate);
 
         if (optionalEmprunt.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
-        empruntToUpdate.setId(id);
-
-        empruntDao.save(empruntToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,13 +71,11 @@ public class EmpruntController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
-        Optional<Emprunt> optionalEmprunt = empruntDao.findById(id);
+        boolean empruntSupprime = empruntService.supprimer(id);
 
-        if (optionalEmprunt.isEmpty()) {
+        if (!empruntSupprime) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        empruntDao.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
