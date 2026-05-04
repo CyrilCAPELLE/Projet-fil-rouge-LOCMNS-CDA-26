@@ -1,8 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.EtatDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Etat;
+import edu.mns.cda.projetfilrougelocmnscda26.service.EtatService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EtatView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @RequestMapping("/etat")
 public class EtatController {
 
-    protected final EtatDao etatDao;
+    protected final EtatService etatService;
 
     @GetMapping("/liste")
     @JsonView(EtatView.class)
     public List<Etat> getAll() {
-        return etatDao.findAll();
+        return etatService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Etat> get(@PathVariable int id) {
 
-        Optional<Etat> optionalEtat = etatDao.findById(id);
+        Optional<Etat> optionalEtat = etatService.getById(id);
 
         if (optionalEtat.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +46,9 @@ public class EtatController {
             @Valid
             Etat etatToInsert) {
 
-        etatToInsert.setId(null);
-        etatDao.save(etatToInsert);
+        Etat etatCreate = etatService.create(etatToInsert);
 
-        return new ResponseEntity<>(etatToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(etatCreate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -59,16 +58,12 @@ public class EtatController {
             @Valid
             Etat etatToUpdate) {
 
-        Optional<Etat> optionalEtat = etatDao.findById(id);
+        Optional<Etat> optionalEtat = etatService.update(id, etatToUpdate);
 
         if (optionalEtat.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
-        etatToUpdate.setId(id);
-
-        etatDao.save(etatToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,13 +71,11 @@ public class EtatController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
-        Optional<Etat> optionalEtat = etatDao.findById(id);
+        boolean etatSupprime = etatService.supprimer(id);
 
-        if (optionalEtat.isEmpty()) {
+        if (!etatSupprime) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        etatDao.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
