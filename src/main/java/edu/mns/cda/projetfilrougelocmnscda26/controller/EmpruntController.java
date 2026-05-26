@@ -79,4 +79,20 @@ public class EmpruntController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/demande")
+    @JsonView(EmpruntView.class)
+    public ResponseEntity<?> creerDemande(@RequestBody Emprunt empruntInput) {
+        try {
+            Emprunt emprunt = empruntService.creerDemande(
+                    empruntInput.getPersonne().getId(),
+                    empruntInput.getMateriel().getId(),
+                    empruntInput.getDateDebut(),
+                    empruntInput.getDateRetourPrevue()
+            );
+            return new ResponseEntity<>(emprunt, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
