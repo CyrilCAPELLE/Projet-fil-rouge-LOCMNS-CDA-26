@@ -8,10 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PersonneDao extends JpaRepository<Personne, Integer> {
 
+    Optional<Personne> findByEmail(String email);
 
     @Query("SELECT p FROM Personne p JOIN p.profiles pr WHERE pr.libelleProfile = :nomProfile")
     List<Personne> retourneListeSelonProfile(@Param("nomProfile") String profile);
