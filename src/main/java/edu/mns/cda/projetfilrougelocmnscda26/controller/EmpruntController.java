@@ -95,4 +95,26 @@ public class EmpruntController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/{id}/valider")
+    @JsonView(EmpruntView.class)
+    public ResponseEntity<?> valider(@PathVariable int id, @RequestParam int adminId) {
+        try {
+            Emprunt emprunt = empruntService.valider(id, adminId);
+            return new ResponseEntity<>(emprunt, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id}/refuser")
+    @JsonView(EmpruntView.class)
+    public ResponseEntity<?> refuser(@PathVariable int id, @RequestParam int adminId) {
+        try {
+            Emprunt emprunt = empruntService.refuser(id, adminId);
+            return new ResponseEntity<>(emprunt, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
