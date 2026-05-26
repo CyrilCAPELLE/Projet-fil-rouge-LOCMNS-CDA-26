@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface EmpruntDao extends JpaRepository<Emprunt, Integer> {
 
+    List<Emprunt> findByPersonneId(int personneId);
+
     @Query("""
     SELECT e FROM Emprunt e 
     WHERE e.materiel.id = :materielId 

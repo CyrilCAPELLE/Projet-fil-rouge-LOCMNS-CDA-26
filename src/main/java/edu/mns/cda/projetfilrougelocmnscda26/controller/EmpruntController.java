@@ -117,4 +117,10 @@ public class EmpruntController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/personne/{personneId}")
+    @JsonView(EmpruntView.class)
+    public List<Emprunt> getMesDemandes(@PathVariable int personneId) {
+        return empruntService.getMesDemandes(personneId);
+    }
 }

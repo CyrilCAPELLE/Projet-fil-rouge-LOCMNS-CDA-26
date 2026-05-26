@@ -152,4 +152,8 @@ public class EmpruntService {
         return empruntDao.save(emprunt);
     }
 
+    public List<Emprunt> getMesDemandes(int personneId) {
+        return empruntDao.findByPersonneId(personneId);
+    }
+
 }
