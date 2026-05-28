@@ -79,4 +79,48 @@ public class EmpruntController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/demande")
+    @JsonView(EmpruntView.class)
+    public ResponseEntity<?> creerDemande(@RequestBody Emprunt empruntInput) {
+        try {
+            Emprunt emprunt = empruntService.creerDemande(
+                    empruntInput.getPersonne().getId(),
+                    empruntInput.getMateriel().getId(),
+                    empruntInput.getDateDebut(),
+                    empruntInput.getDateRetourPrevue()
+            );
+            return new ResponseEntity<>(emprunt, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id}/valider")
+    @JsonView(EmpruntView.class)
+    public ResponseEntity<?> valider(@PathVariable int id, @RequestParam int adminId) {
+        try {
+            Emprunt emprunt = empruntService.valider(id, adminId);
+            return new ResponseEntity<>(emprunt, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id}/refuser")
+    @JsonView(EmpruntView.class)
+    public ResponseEntity<?> refuser(@PathVariable int id, @RequestParam int adminId) {
+        try {
+            Emprunt emprunt = empruntService.refuser(id, adminId);
+            return new ResponseEntity<>(emprunt, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/personne/{personneId}")
+    @JsonView(EmpruntView.class)
+    public List<Emprunt> getMesDemandes(@PathVariable int personneId) {
+        return empruntService.getMesDemandes(personneId);
+    }
 }
