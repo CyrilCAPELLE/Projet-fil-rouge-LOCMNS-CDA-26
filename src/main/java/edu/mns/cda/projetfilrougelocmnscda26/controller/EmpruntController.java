@@ -6,10 +6,12 @@ import edu.mns.cda.projetfilrougelocmnscda26.service.EmpruntService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EmpruntView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,5 +124,32 @@ public class EmpruntController {
     @JsonView(EmpruntView.class)
     public List<Emprunt> getMesDemandes(@PathVariable int personneId) {
         return empruntService.getMesDemandes(personneId);
+    }
+
+    @PutMapping("/{id}/retour")
+    @JsonView(EmpruntView.class)
+    public ResponseEntity<?> enregistrerRetour(
+            @PathVariable int id,
+            @RequestParam int adminId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateRetour,
+            @RequestParam int nouvelEtatId
+    ) {
+        try {
+            Emprunt emprunt = empruntService.enregistrerRetour(id, adminId, dateRetour, nouvelEtatId);
+            return new ResponseEntity<>(emprunt, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id}/annuler")
+    @JsonView(EmpruntView.class)
+    public ResponseEntity<?> annuler(@PathVariable int id, @RequestParam int personneId) {
+        try {
+            Emprunt emprunt = empruntService.annuler(id, personneId);
+            return new ResponseEntity<>(emprunt, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
