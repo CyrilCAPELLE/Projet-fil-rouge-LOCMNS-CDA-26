@@ -1,12 +1,10 @@
 package edu.mns.cda.projetfilrougelocmnscda26.service;
 
 import edu.mns.cda.projetfilrougelocmnscda26.dao.EmpruntDao;
+import edu.mns.cda.projetfilrougelocmnscda26.dao.EtatDao;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.MaterielDao;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.PersonneDao;
-import edu.mns.cda.projetfilrougelocmnscda26.model.Emprunt;
-import edu.mns.cda.projetfilrougelocmnscda26.model.FamilleMateriel;
-import edu.mns.cda.projetfilrougelocmnscda26.model.Materiel;
-import edu.mns.cda.projetfilrougelocmnscda26.model.Personne;
+import edu.mns.cda.projetfilrougelocmnscda26.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +19,7 @@ public class EmpruntService {
     private final EmpruntDao empruntDao;
     private final PersonneDao personneDao;
     private final MaterielDao materielDao;
+    private final EtatDao etatDao;
 
     public List<Emprunt> getAll() {
         return empruntDao.findAll();
@@ -154,6 +153,69 @@ public class EmpruntService {
 
     public List<Emprunt> getMesDemandes(int personneId) {
         return empruntDao.findByPersonneId(personneId);
+    }
+
+    public Emprunt enregistrerRetour(int empruntId, int adminId, Date dateRetour, int nouvelEtatId) {
+
+        Emprunt emprunt = empruntDao.findById(empruntId)
+                .orElseThrow(() -> new IllegalArgumentException("Emprunt introuvable : " + empruntId));
+
+        if (!"VALIDEE".equals(emprunt.getStatutDemande())) {
+            throw new IllegalArgumentException(
+                    "Seuls les emprunts validés peuvent faire l'objet d'un retour (statut actuel : " + emprunt.getStatutDemande() + ")"
+            );
+        }
+
+        Personne admin = personneDao.findById(adminId)
+                .orElseThrow(() -> new IllegalArgumentException("Administrateur introuvable : " + adminId));
+
+        Etat nouvelEtat = etatDao.findById(nouvelEtatId)
+                .orElseThrow(() -> new IllegalArgumentException("État introuvable : " + nouvelEtatId));
+
+        if (dateRetour.after(new Date())) {
+            throw new IllegalArgumentException("La date de retour ne peut pas être dans le futur");
+        }
+
+        if (dateRetour.before(emprunt.getDateDebut())) {
+            throw new IllegalArgumentException("La date de retour ne peut pas être avant la date de début de l'emprunt");
+        }
+
+        emprunt.setStatutDemande("RETOURNE");
+        emprunt.setDateRetourReelle(dateRetour);
+        emprunt.setRecuPar(admin);
+
+        Materiel materiel = emprunt.getMateriel();
+        materiel.setEtat(nouvelEtat);
+        materielDao.save(materiel);
+
+        return empruntDao.save(emprunt);
+    }
+
+    public Emprunt annuler(int empruntId, int personneId) {
+
+        Emprunt emprunt = empruntDao.findById(empruntId)
+                .orElseThrow(() -> new IllegalArgumentException("Emprunt introuvable : " + empruntId));
+
+        Personne personne = personneDao.findById(personneId)
+                .orElseThrow(() -> new IllegalArgumentException("Personne introuvable : " + personneId));
+
+        if (!emprunt.getPersonne().getId().equals(personne.getId())) {
+            throw new IllegalArgumentException("Vous ne pouvez annuler que vos propres demandes d'emprunt");
+        }
+
+        String statut = emprunt.getStatutDemande();
+        if (!"EN_ATTENTE".equals(statut) && !"VALIDEE".equals(statut)) {
+            throw new IllegalArgumentException(
+                    "Seules les demandes en attente ou validées peuvent être annulées (statut actuel : " + statut + ")"
+            );
+        }
+
+        if (!emprunt.getDateDebut().after(new Date())) {
+            throw new IllegalArgumentException("Impossible d'annuler : l'emprunt a déjà commencé");
+        }
+
+        emprunt.setStatutDemande("ANNULEE");
+        return empruntDao.save(emprunt);
     }
 
 }
