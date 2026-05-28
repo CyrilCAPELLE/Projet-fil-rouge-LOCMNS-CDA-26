@@ -62,5 +62,9 @@ public class Emprunt {
 
     @ManyToOne
     @JsonView(EmpruntView.class)
+    protected Personne recuPar;
+
+    @ManyToOne
+    @JsonView(EmpruntView.class)
     protected Materiel materiel;
 }
