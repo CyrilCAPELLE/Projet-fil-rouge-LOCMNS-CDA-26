@@ -2,18 +2,12 @@ package edu.mns.cda.projetfilrougelocmnscda26.security;
 
 import edu.mns.cda.projetfilrougelocmnscda26.dao.PersonneDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Personne;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,10 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
          Personne personne = optionalPersonne.get();
 
-        return User.builder()
-                .username(personne.getEmail())
-                .password(personne.getMotDePasse())
-                .roles("USER")
-                .build();
+        return new PersonneDetails(optionalPersonne.get());
     }
 }
