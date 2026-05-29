@@ -52,7 +52,7 @@ public class Personne {
     @NotBlank(groups = {OnCreate.class}, message = "Le mot de passe ne peut pas être vide")
     protected String motDePasse;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "profile_personne",
             joinColumns = @JoinColumn(name = "personne_id"),
