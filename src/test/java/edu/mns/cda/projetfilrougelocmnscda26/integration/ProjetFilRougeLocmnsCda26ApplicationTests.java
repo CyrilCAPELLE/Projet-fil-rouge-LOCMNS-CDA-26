@@ -1,4 +1,4 @@
-package edu.mns.cda.projetfilrougelocmnscda26;
+package edu.mns.cda.projetfilrougelocmnscda26.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -45,12 +45,12 @@ INSERT INTO type_document(libelle_type_document) VALUES
     ('Guide utilisateur');
 
 INSERT INTO personne(nom, prenom, email, actif, mot_de_passe) VALUES
-    ('Dupont', 'Jean', 'j.dupont@mns.fr', true, 'password123'),
-    ('Martin', 'Sophie', 's.martin@mns.fr', true, 'password123'),
-    ('Leroy', 'Marc', 'm.leroy@mns.fr', true, 'password123'),
-    ('Bernard', 'Claire', 'c.bernard@mns.fr', true, 'password123'),
-    ('Petit', 'Thomas', 't.petit@mns.fr', true, 'password123'),
-    ('Moreau', 'Julie', 'j.moreau@mns.fr', false, 'password123');
+    ('Dupont', 'Jean', 'j.dupont@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
+    ('Martin', 'Sophie', 's.martin@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
+    ('Leroy', 'Marc', 'm.leroy@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
+    ('Bernard', 'Claire', 'c.bernard@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
+    ('Petit', 'Thomas', 't.petit@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
+    ('Moreau', 'Julie', 'j.moreau@mns.fr', false, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m');
 
 INSERT INTO profile_personne(personne_id, profile_id) VALUES
     (1, 1),
@@ -59,6 +59,12 @@ INSERT INTO profile_personne(personne_id, profile_id) VALUES
     (4, 3),
     (5, 4),
     (6, 2);
+
+INSERT INTO famille_profile(profile_id, famille_materiel_id) VALUES
+    (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8),
+    (2, 1), (2, 2), (2, 3), (2, 4), (2, 6), (2, 7), (2, 8),
+    (3, 1), (3, 6), (3, 8),
+    (4, 1), (4, 3), (4, 4), (4, 5), (4, 6), (4, 8);
 
 INSERT INTO materiel(nom_materiel, numero_de_serie, date_achat, famille_materiel_id, emplacement_id, etat_id) VALUES
     ('Dell Latitude 5540', 'DL5540-001', '2024-09-15', 1, 1, 1),
@@ -91,10 +97,10 @@ INSERT INTO composant(caracteristique, type_composant_id) VALUES
     ('1 To HDD Seagate', 5);
 
 INSERT INTO documentation(titre_document, description, date_ajout, type_document_id) VALUES
-     ('Notice Dell Latitude 5540', 'Manuel utilisateur complet du Dell Latitude 5540', '2024-09-15', 1),
-     ('Guide HP EliteBook 840', 'Guide de démarrage rapide HP EliteBook', '2024-06-20', 4),
-     ('Vidéo Meta Quest 3', 'Tutoriel de prise en main du Meta Quest 3', '2024-12-01', 2),
-     ('Fiche technique Epson EB-W52', 'Caractéristiques du vidéoprojecteur Epson', '2023-09-01', 3);
+    ('Notice Dell Latitude 5540', 'Manuel utilisateur complet du Dell Latitude 5540', '2024-09-15', 1),
+    ('Guide HP EliteBook 840', 'Guide de démarrage rapide HP EliteBook', '2024-06-20', 4),
+    ('Vidéo Meta Quest 3', 'Tutoriel de prise en main du Meta Quest 3', '2024-12-01', 2),
+    ('Fiche technique Epson EB-W52', 'Caractéristiques du vidéoprojecteur Epson', '2023-09-01', 3);
 
 INSERT INTO composant_materiel(materiel_id, composant_id) VALUES
     (1, 1), (1, 5), (1, 6), (1, 8),
@@ -109,3 +115,7 @@ INSERT INTO documentation_materiel(materiel_id, documentation_id) VALUES
     (3, 2),
     (12, 3), (13, 3),
     (11, 4);
+
+INSERT INTO emprunt(date_debut, date_retour_prevue, date_demande, statut_demande, personne_id, materiel_id) VALUES
+    ('2026-09-01', '2026-09-10', NOW(), 'EN_ATTENTE', 3, 1),
+    ('2026-10-15', '2026-10-20', NOW(), 'EN_ATTENTE', 2, 12);

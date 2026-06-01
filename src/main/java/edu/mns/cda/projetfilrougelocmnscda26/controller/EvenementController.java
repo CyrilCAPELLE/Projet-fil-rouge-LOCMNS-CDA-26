@@ -1,8 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.EvenementDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Evenement;
+import edu.mns.cda.projetfilrougelocmnscda26.service.EvenementService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EvenementView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @RequestMapping("/evenement")
 public class EvenementController {
 
-    protected final EvenementDao evenementDao;
+    protected final EvenementService evenementService;
 
     @GetMapping("/liste")
     @JsonView(EvenementView.class)
     public List<Evenement> getAll() {
-        return evenementDao.findAll();
+        return evenementService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Evenement> get(@PathVariable int id) {
 
-        Optional<Evenement> optionalEvenement = evenementDao.findById(id);
+        Optional<Evenement> optionalEvenement = evenementService.getById(id);
 
         if (optionalEvenement.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +46,9 @@ public class EvenementController {
             @Valid
             Evenement evenementToInsert) {
 
-        evenementToInsert.setId(null);
-        evenementDao.save(evenementToInsert);
+        Evenement evenementCreate = evenementService.create(evenementToInsert);
 
-        return new ResponseEntity<>(evenementToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(evenementCreate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -59,16 +58,12 @@ public class EvenementController {
             @Valid
             Evenement evenementToUpdate) {
 
-        Optional<Evenement> optionalEvenement = evenementDao.findById(id);
+        Optional<Evenement> optionalEvenement = evenementService.update(id, evenementToUpdate);
 
         if (optionalEvenement.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
-        evenementToUpdate.setId(id);
-
-        evenementDao.save(evenementToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,13 +71,11 @@ public class EvenementController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
-        Optional<Evenement> optionalEvenement = evenementDao.findById(id);
+        boolean evenementSupprime = evenementService.supprimer(id);
 
-        if (optionalEvenement.isEmpty()) {
+        if (!evenementSupprime) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        evenementDao.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -1,8 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import edu.mns.cda.projetfilrougelocmnscda26.dao.TypeComposantDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.TypeComposant;
+import edu.mns.cda.projetfilrougelocmnscda26.service.TypeComposantService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.TypeComposantView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @RequestMapping("/type-composant")
 public class TypeComposantController {
 
-    protected final TypeComposantDao typeComposantDao;
+    protected final TypeComposantService typeComposantService;
 
     @GetMapping("/liste")
     @JsonView(TypeComposantView.class)
     public List<TypeComposant> getAll() {
-        return typeComposantDao.findAll();
+        return typeComposantService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TypeComposant> get(@PathVariable int id) {
 
-        Optional<TypeComposant> optionalTypeComposant = typeComposantDao.findById(id);
+        Optional<TypeComposant> optionalTypeComposant = typeComposantService.getById(id);
 
         if (optionalTypeComposant.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,10 +46,9 @@ public class TypeComposantController {
             @Valid
             TypeComposant typeComposantToInsert) {
 
-        typeComposantToInsert.setId(null);
-        typeComposantDao.save(typeComposantToInsert);
+        TypeComposant typeComposantCreate = typeComposantService.create(typeComposantToInsert);
 
-        return new ResponseEntity<>(typeComposantToInsert, HttpStatus.CREATED);
+        return new ResponseEntity<>(typeComposantCreate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -59,16 +58,12 @@ public class TypeComposantController {
             @Valid
             TypeComposant typeComposantToUpdate) {
 
-        Optional<TypeComposant> optionalTypeComposant = typeComposantDao.findById(id);
+        Optional<TypeComposant> optionalTypeComposant = typeComposantService.update(id, typeComposantToUpdate);
 
         if (optionalTypeComposant.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
-        typeComposantToUpdate.setId(id);
-
-        typeComposantDao.save(typeComposantToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -76,13 +71,11 @@ public class TypeComposantController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
-        Optional<TypeComposant> optionalTypeComposant = typeComposantDao.findById(id);
+        boolean typeComposantSupprime = typeComposantService.supprimer(id);
 
-        if (optionalTypeComposant.isEmpty()) {
+        if (!typeComposantSupprime) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        typeComposantDao.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
