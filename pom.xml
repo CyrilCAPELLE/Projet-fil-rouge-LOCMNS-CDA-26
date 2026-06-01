@@ -100,10 +100,10 @@
             <version>0.12.6</version>
             <scope>runtime</scope>
         </dependency>
-
     </dependencies>
 
     <build>
+        <finalName>app</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -144,9 +144,11 @@
                     </excludes>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+            </plugin>
         </plugins>
-
     </build>
-
 </project>
