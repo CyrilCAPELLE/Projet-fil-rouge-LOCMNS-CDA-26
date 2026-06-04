@@ -49,7 +49,7 @@ public class AuthController {
             String jwt = Jwts.builder()
                     .subject(personne.getEmail())
                     .claim("roles", roles)
-                    .signWith(SignatureAlgorithm.ES384, jwtSecret)
+                    .signWith(key)
                     .compact();
 
             return new ResponseEntity<>(jwt, HttpStatus.OK);
