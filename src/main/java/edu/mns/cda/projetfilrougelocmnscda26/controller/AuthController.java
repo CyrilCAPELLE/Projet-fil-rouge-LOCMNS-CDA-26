@@ -3,6 +3,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Personne;
 import edu.mns.cda.projetfilrougelocmnscda26.security.PersonneDetails;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +49,7 @@ public class AuthController {
             String jwt = Jwts.builder()
                     .subject(personne.getEmail())
                     .claim("roles", roles)
-                    .signWith(key)
+                    .signWith(SignatureAlgorithm.ES384, jwtSecret)
                     .compact();
 
             return new ResponseEntity<>(jwt, HttpStatus.OK);
