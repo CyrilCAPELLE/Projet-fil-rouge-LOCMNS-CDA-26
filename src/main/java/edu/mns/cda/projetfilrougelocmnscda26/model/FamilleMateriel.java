@@ -23,7 +23,7 @@ public class FamilleMateriel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(FamilleMaterielView.class)
+    @JsonView({FamilleMaterielView.class, MaterielView.class})
     protected Integer id;
 
     @Column(nullable = false, unique = true, length = 20)
