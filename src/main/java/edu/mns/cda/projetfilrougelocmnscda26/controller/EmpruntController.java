@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Emprunt;
+import edu.mns.cda.projetfilrougelocmnscda26.security.PersonneDetails;
 import edu.mns.cda.projetfilrougelocmnscda26.service.EmpruntService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EmpruntView;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -85,9 +87,9 @@ public class EmpruntController {
     @PostMapping("/demande")
     @JsonView(EmpruntView.class)
     @ResponseStatus(HttpStatus.CREATED)
-    public Emprunt creerDemande(@RequestBody Emprunt empruntInput) {
+    public Emprunt creerDemande(@AuthenticationPrincipal PersonneDetails personneDetails,  @RequestBody Emprunt empruntInput) {
         return empruntService.creerDemande(
-                empruntInput.getPersonne().getId(),
+                personneDetails.getPersonne().getId(),
                 empruntInput.getMateriel().getId(),
                 empruntInput.getDateDebut(),
                 empruntInput.getDateRetourPrevue()

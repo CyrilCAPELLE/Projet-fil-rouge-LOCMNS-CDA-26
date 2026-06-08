@@ -47,4 +47,8 @@ public class FamilleMaterielService {
         return true;
     }
 
+    public List<FamilleMateriel> getAccessibles(int personneId) {
+        return familleMaterielDao.findAccessiblesByPersonne(personneId);
+    }
+
 }
