@@ -2,12 +2,14 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.FamilleMateriel;
+import edu.mns.cda.projetfilrougelocmnscda26.security.PersonneDetails;
 import edu.mns.cda.projetfilrougelocmnscda26.service.FamilleMaterielService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.FamilleMaterielView;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,5 +80,11 @@ public class FamilleMaterielController {
         }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/accessibles")
+    @JsonView(FamilleMaterielView.class)
+    public List<FamilleMateriel> getAccessibles(@AuthenticationPrincipal PersonneDetails personneDetails) {
+        return familleMaterielService.getAccessibles(personneDetails.getPersonne().getId());
     }
 }
