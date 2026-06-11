@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.FamilleMateriel;
+import edu.mns.cda.projetfilrougelocmnscda26.security.IsAdmin;
 import edu.mns.cda.projetfilrougelocmnscda26.security.PersonneDetails;
 import edu.mns.cda.projetfilrougelocmnscda26.service.FamilleMaterielService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.FamilleMaterielView;
@@ -43,6 +44,7 @@ public class FamilleMaterielController {
 
     @PostMapping
     @JsonView(FamilleMaterielView.class)
+    @IsAdmin
     public ResponseEntity<FamilleMateriel> create(
             @RequestBody
             @Valid
@@ -54,6 +56,7 @@ public class FamilleMaterielController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(
             @PathVariable int id,
             @RequestBody
@@ -71,6 +74,7 @@ public class FamilleMaterielController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
         boolean familleMaterielSupprimee = familleMaterielService.supprimer(id);

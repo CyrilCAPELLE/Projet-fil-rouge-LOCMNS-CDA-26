@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Evenement;
+import edu.mns.cda.projetfilrougelocmnscda26.security.IsAdmin;
 import edu.mns.cda.projetfilrougelocmnscda26.service.EvenementService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EvenementView;
 import jakarta.validation.Valid;
@@ -41,6 +42,7 @@ public class EvenementController {
 
     @PostMapping
     @JsonView(EvenementView.class)
+    @IsAdmin
     public ResponseEntity<Evenement> create(
             @RequestBody
             @Valid
@@ -52,6 +54,7 @@ public class EvenementController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(
             @PathVariable int id,
             @RequestBody
@@ -69,6 +72,7 @@ public class EvenementController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
         boolean evenementSupprime = evenementService.supprimer(id);

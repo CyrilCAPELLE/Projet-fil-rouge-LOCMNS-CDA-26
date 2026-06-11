@@ -1,6 +1,7 @@
 package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import edu.mns.cda.projetfilrougelocmnscda26.security.IsAdmin;
 import edu.mns.cda.projetfilrougelocmnscda26.service.ProfileService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.ProfileView;
 import jakarta.validation.Valid;
@@ -40,6 +41,7 @@ public class ProfileController {
 
     @PostMapping
     @JsonView(ProfileView.class)
+    @IsAdmin
     public ResponseEntity<Profile> create(
             @RequestBody
             @Valid
@@ -51,6 +53,7 @@ public class ProfileController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(
             @PathVariable int id,
             @RequestBody
@@ -67,6 +70,7 @@ public class ProfileController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
         boolean profileSupprime = profileService.supprimer(id);
