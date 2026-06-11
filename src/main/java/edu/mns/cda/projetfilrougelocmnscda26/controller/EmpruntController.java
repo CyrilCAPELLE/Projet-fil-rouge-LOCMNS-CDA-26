@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
@@ -110,8 +111,15 @@ public class EmpruntController {
 
     @GetMapping("/personne/{personneId}")
     @JsonView(EmpruntView.class)
-    public List<Emprunt> getMesDemandes(@PathVariable int personneId) {
-        return empruntService.getMesDemandes(personneId);
+    public List<Emprunt> getMesDemandes(@AuthenticationPrincipal PersonneDetails personneDetails, @PathVariable int personneId) {
+        int idConnecte = personneDetails.getPersonne().getId();
+
+        boolean estAdmin = personneDetails.getAuthorities().stream().anyMatch(autorite -> autorite.getAuthority().equals("ROLE_ADMIN"));
+
+        if (estAdmin || idConnecte == personneId) {
+            return empruntService.getMesDemandes(personneId);
+        }
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous ne pouvez consulter que vos propres demandes");
     }
 
     @PutMapping("/{id}/retour")
