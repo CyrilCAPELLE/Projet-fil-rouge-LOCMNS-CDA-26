@@ -106,15 +106,21 @@ public class EmpruntController {
     @PutMapping("/{id}/valider")
     @JsonView(EmpruntView.class)
     @IsAdmin
-    public Emprunt valider(@PathVariable int id, @RequestParam int adminId) {
-        return empruntService.valider(id, adminId);
+    public Emprunt valider(@AuthenticationPrincipal PersonneDetails personneDetails, @PathVariable int id) {
+        return empruntService.valider(
+                id,
+                personneDetails.getPersonne().getId()
+        );
     }
 
     @PutMapping("/{id}/refuser")
     @JsonView(EmpruntView.class)
     @IsAdmin
-    public Emprunt refuser(@PathVariable int id, @RequestParam int adminId) {
-        return empruntService.refuser(id, adminId);
+    public Emprunt refuser(@AuthenticationPrincipal PersonneDetails personneDetails, @PathVariable int id) {
+        return empruntService.refuser(
+                id,
+                personneDetails.getPersonne().getId()
+        );
     }
 
     @GetMapping("/personne/{personneId}")
