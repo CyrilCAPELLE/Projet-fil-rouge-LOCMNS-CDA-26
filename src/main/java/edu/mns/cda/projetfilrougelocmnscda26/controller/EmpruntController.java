@@ -141,11 +141,11 @@ public class EmpruntController {
     @IsAdmin
     public Emprunt enregistrerRetour(
             @PathVariable int id,
-            @RequestParam int adminId,
+            @AuthenticationPrincipal PersonneDetails personneDetails,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateRetour,
             @RequestParam int nouvelEtatId
     ) {
-        return empruntService.enregistrerRetour(id, adminId, dateRetour, nouvelEtatId);
+        return empruntService.enregistrerRetour(id, personneDetails.getPersonne().getId(), dateRetour, nouvelEtatId);
     }
 
     @PutMapping("/{id}/annuler")
