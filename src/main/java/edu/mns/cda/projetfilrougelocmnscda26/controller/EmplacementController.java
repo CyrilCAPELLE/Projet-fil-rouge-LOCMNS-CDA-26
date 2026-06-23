@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Emplacement;
+import edu.mns.cda.projetfilrougelocmnscda26.security.IsAdmin;
 import edu.mns.cda.projetfilrougelocmnscda26.service.EmplacementService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EmplacementView;
 import jakarta.validation.Valid;
@@ -40,6 +41,7 @@ public class EmplacementController {
     }
 
     @PostMapping
+    @IsAdmin
     @JsonView(EmplacementView.class)
     public ResponseEntity<Emplacement> create(
             @RequestBody
@@ -52,6 +54,7 @@ public class EmplacementController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(
             @PathVariable int id,
             @RequestBody
@@ -69,6 +72,7 @@ public class EmplacementController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
         boolean emplacementSupprime = emplacementService.supprimer(id);

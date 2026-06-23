@@ -49,6 +49,7 @@ public class AuthController {
             String jwt = Jwts.builder()
                     .subject(personne.getEmail())
                     .claim("roles", roles)
+                    .claim("id", personneDetails.getPersonne().getId())
                     .signWith(key)
                     .compact();
 

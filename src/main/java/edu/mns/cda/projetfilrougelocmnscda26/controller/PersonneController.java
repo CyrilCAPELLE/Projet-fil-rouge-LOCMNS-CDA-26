@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Personne;
+import edu.mns.cda.projetfilrougelocmnscda26.security.IsAdmin;
 import edu.mns.cda.projetfilrougelocmnscda26.service.PersonneService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.PersonneView;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/personne")
 @Tag(name = "Personne", description = "API pour manipuler les utilisateurs.")
+@IsAdmin
 public class PersonneController {
 
     protected final PersonneService personneService;

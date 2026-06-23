@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.TypeComposant;
+import edu.mns.cda.projetfilrougelocmnscda26.security.IsAdmin;
 import edu.mns.cda.projetfilrougelocmnscda26.service.TypeComposantService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.TypeComposantView;
 import jakarta.validation.Valid;
@@ -41,6 +42,7 @@ public class TypeComposantController {
 
     @PostMapping
     @JsonView(TypeComposantView.class)
+    @IsAdmin
     public ResponseEntity<TypeComposant> create(
             @RequestBody
             @Valid
@@ -52,6 +54,7 @@ public class TypeComposantController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(
             @PathVariable int id,
             @RequestBody
@@ -69,6 +72,7 @@ public class TypeComposantController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
         boolean typeComposantSupprime = typeComposantService.supprimer(id);
