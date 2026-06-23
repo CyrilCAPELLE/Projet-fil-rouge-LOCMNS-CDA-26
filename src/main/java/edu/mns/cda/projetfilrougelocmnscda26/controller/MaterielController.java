@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Materiel;
+import edu.mns.cda.projetfilrougelocmnscda26.security.IsAdmin;
 import edu.mns.cda.projetfilrougelocmnscda26.service.MaterielService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.MaterielView;
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ public class MaterielController {
     }
 
     @GetMapping("/{id}")
+    @JsonView(MaterielView.class)
     public ResponseEntity<Materiel> get(@PathVariable int id) {
 
         Optional<Materiel> optionalMateriel = materielService.getById(id);
@@ -41,6 +43,7 @@ public class MaterielController {
 
     @PostMapping
     @JsonView(MaterielView.class)
+    @IsAdmin
     public ResponseEntity<Materiel> create(
             @RequestBody
             @Valid
@@ -52,6 +55,7 @@ public class MaterielController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(
             @PathVariable int id,
             @RequestBody
@@ -69,6 +73,7 @@ public class MaterielController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
         boolean materielSupprime = materielService.supprimer(id);

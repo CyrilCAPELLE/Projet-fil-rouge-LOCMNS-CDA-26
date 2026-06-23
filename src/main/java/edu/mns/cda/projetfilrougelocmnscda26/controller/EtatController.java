@@ -2,6 +2,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Etat;
+import edu.mns.cda.projetfilrougelocmnscda26.security.IsAdmin;
 import edu.mns.cda.projetfilrougelocmnscda26.service.EtatService;
 import edu.mns.cda.projetfilrougelocmnscda26.view.EtatView;
 import jakarta.validation.Valid;
@@ -40,6 +41,7 @@ public class EtatController {
     }
 
     @PostMapping
+    @IsAdmin
     @JsonView(EtatView.class)
     public ResponseEntity<Etat> create(
             @RequestBody
@@ -52,6 +54,7 @@ public class EtatController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(
             @PathVariable int id,
             @RequestBody
@@ -69,6 +72,7 @@ public class EtatController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
 
         boolean etatSupprime = etatService.supprimer(id);
