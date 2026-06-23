@@ -29,6 +29,7 @@ public class MaterielController {
     }
 
     @GetMapping("/{id}")
+    @JsonView(MaterielView.class)
     public ResponseEntity<Materiel> get(@PathVariable int id) {
 
         Optional<Materiel> optionalMateriel = materielService.getById(id);
