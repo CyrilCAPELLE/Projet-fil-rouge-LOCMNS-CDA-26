@@ -23,6 +23,12 @@ public class MockEmpruntDao implements EmpruntDao {
             emprunt.setStatutDemande("VALIDEE");
             return Optional.of(emprunt);
         }
+        if (id == 2) {
+            Emprunt emprunt = new Emprunt();
+            emprunt.setId(2);
+            emprunt.setStatutDemande("EN_ATTENTE");
+            return Optional.of(emprunt);
+        }
         return Optional.empty();
     }
 
@@ -52,7 +58,7 @@ public class MockEmpruntDao implements EmpruntDao {
     @Override public <S extends Emprunt> long count(Example<S> example) { return 0; }
     @Override public <S extends Emprunt> boolean exists(Example<S> example) { return false; }
     @Override public <S extends Emprunt, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) { return null; }
-    @Override public <S extends Emprunt> S save(S entity) { return null; }
+    @Override public <S extends Emprunt> S save(S entity) { return entity; }
     @Override public <S extends Emprunt> List<S> saveAll(Iterable<S> entities) { return List.of(); }
     @Override public boolean existsById(Integer integer) { return false; }
     @Override public List<Emprunt> findAll() { return List.of(); }
