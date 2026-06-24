@@ -30,12 +30,21 @@ public class Evenement {
     @Column(nullable = false)
     @NotBlank
     @JsonView(EvenementView.class)
+    protected String typeEvenement;
+
+    @Column(nullable = false)
+    @NotBlank
+    @JsonView(EvenementView.class)
     protected String libelleEvenement;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
     @JsonView(EvenementView.class)
     protected Date dateEvenement;
+
+    @Column(nullable = false)
+    @JsonView(EvenementView.class)
+    protected boolean traite;
 
     @ManyToOne
     @JsonView(EvenementView.class)

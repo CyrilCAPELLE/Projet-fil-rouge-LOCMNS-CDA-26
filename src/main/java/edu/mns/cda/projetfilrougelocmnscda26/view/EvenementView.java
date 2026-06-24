@@ -1,4 +1,4 @@
 package edu.mns.cda.projetfilrougelocmnscda26.view;
 
-public interface EvenementView {
+public interface EvenementView extends EmpruntView {
 }
