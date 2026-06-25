@@ -72,6 +72,13 @@ public class MaterielController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping("/{id}/etat")
+    @JsonView(MaterielView.class)
+    @IsAdmin
+    public Materiel changerEtat(@PathVariable int id, @RequestParam int nouvelEtatId) {
+        return materielService.changerEtat(id, nouvelEtatId);
+    }
+
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
