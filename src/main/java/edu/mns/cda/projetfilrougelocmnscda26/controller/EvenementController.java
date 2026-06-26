@@ -28,6 +28,7 @@ public class EvenementController {
 
     @GetMapping("/liste")
     @JsonView(EvenementView.class)
+    @IsAdmin
     public List<Evenement> getAll() {
         return evenementService.getAll();
     }
