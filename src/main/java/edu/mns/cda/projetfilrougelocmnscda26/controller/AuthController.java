@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,6 +51,7 @@ public class AuthController {
                     .subject(personne.getEmail())
                     .claim("roles", roles)
                     .claim("id", personneDetails.getPersonne().getId())
+                    .expiration(new Date(System.currentTimeMillis() + 86400000))
                     .signWith(key)
                     .compact();
 
