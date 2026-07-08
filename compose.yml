@@ -12,6 +12,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
 
+    restart: unless-stopped
+
   app:
     build: .
     ports:
