@@ -31,4 +31,8 @@ public class PersonneDetails implements UserDetails {
     public String getUsername() {
         return personne.getEmail();
     }
+
+    @Override
+    public boolean isEnabled() { return Boolean.TRUE.equals(personne.getActif()); }
+
 }

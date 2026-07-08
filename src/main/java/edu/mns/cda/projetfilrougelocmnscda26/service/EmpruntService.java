@@ -70,9 +70,8 @@ public class EmpruntService {
             throw new IllegalArgumentException("Le matériel n'a pas d'état défini, donc non empruntable");
         }
 
-        String libelleEtat = materiel.getEtat().getLibelleEtat().toLowerCase();
-        if (!libelleEtat.equals("disponible") && !libelleEtat.equals("neuf")) {
-            throw new IllegalArgumentException("Le matériel n'est pas empruntable (état actuel : " + libelleEtat + ")");
+        if (!materiel.getEtat().isEmpruntable()) {
+            throw new IllegalArgumentException("Le matériel n'est pas empruntable (état actuel : " + materiel.getEtat().getLibelleEtat() + ")");
         }
 
         FamilleMateriel familleDuMateriel = materiel.getFamilleMateriel();

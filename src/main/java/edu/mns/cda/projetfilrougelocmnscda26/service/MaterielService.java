@@ -1,6 +1,8 @@
 package edu.mns.cda.projetfilrougelocmnscda26.service;
 
+import edu.mns.cda.projetfilrougelocmnscda26.dao.EtatDao;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.MaterielDao;
+import edu.mns.cda.projetfilrougelocmnscda26.model.Etat;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Materiel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class MaterielService {
 
     private final MaterielDao materielDao;
+    private final EtatDao etatDao;
 
     public List<Materiel> getAll() {
         return materielDao.findAll();
@@ -45,6 +48,17 @@ public class MaterielService {
         }
         materielDao.deleteById(id);
         return true;
+    }
+
+    public Materiel changerEtat(int id, int nouvelEtatId) {
+        Materiel materiel = materielDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Matériel introuvable : " + id));
+
+        Etat etat = etatDao.findById(nouvelEtatId)
+                .orElseThrow(() -> new IllegalArgumentException("État introuvable : " + nouvelEtatId));
+
+        materiel.setEtat(etat);
+        return materielDao.save(materiel);
     }
 
 }
