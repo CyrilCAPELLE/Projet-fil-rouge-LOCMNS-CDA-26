@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build-test:
@@ -47,6 +48,7 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: docker-push
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Pull et relance sur la VM
         run: |
