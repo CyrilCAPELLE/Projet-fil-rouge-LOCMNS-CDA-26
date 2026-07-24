@@ -53,4 +53,20 @@ public class PersonneService {
         personneDao.deleteById(id);
         return true;
     }
+
+    public Optional<Personne> anonymiser(int id) {
+        Optional<Personne> personneAAnonymiser = personneDao.findById(id);
+
+        if (personneAAnonymiser.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Personne personne = personneAAnonymiser.get();
+        personne.setNom("Anonyme");
+        personne.setPrenom("Anonyme");
+        personne.setEmail("anonyme_" + id + "@anonyme.local");
+        personne.setActif(false);
+
+        return Optional.of(personneDao.save(personne));
+    }
  }
