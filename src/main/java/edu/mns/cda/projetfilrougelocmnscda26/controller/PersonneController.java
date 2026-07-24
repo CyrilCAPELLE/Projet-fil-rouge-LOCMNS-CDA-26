@@ -75,6 +75,14 @@ public class PersonneController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping("/{id}/anonymiser")
+    @IsAdmin
+    public ResponseEntity<Void> anonymiser(@PathVariable int id) {
+        return personneService.anonymiser(id)
+                .map(personne -> ResponseEntity.noContent().<Void>build())
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
 

@@ -1,5 +1,6 @@
 package edu.mns.cda.projetfilrougelocmnscda26.security;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
@@ -41,20 +42,21 @@ public class JwtFilter extends OncePerRequestFilter {
             String jwt = token.substring(7);
 
             SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+            try {
+                String email = Jwts.parser()
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(jwt)
+                        .getPayload()
+                        .getSubject();
 
-            String email = Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims(jwt)
-                    .getPayload()
-                    .getSubject();
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (JwtException e) {}
         }
 
         filterChain.doFilter(request, response);

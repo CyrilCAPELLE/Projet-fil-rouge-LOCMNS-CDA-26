@@ -3,6 +3,7 @@ package edu.mns.cda.projetfilrougelocmnscda26.service;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.PersonneDao;
 import edu.mns.cda.projetfilrougelocmnscda26.model.Personne;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Optional;
 public class PersonneService {
 
     private final PersonneDao personneDao;
+    private final PasswordEncoder passwordEncoder;
 
     public List<Personne> getAll() {
         return personneDao.findAll();
@@ -28,6 +30,7 @@ public class PersonneService {
 
     public Personne create(Personne personne) {
         personne.setId(null);
+        personne.setMotDePasse(passwordEncoder.encode(personne.getMotDePasse()));
 
         return personneDao.save(personne);
     }
@@ -49,5 +52,21 @@ public class PersonneService {
         }
         personneDao.deleteById(id);
         return true;
+    }
+
+    public Optional<Personne> anonymiser(int id) {
+        Optional<Personne> personneAAnonymiser = personneDao.findById(id);
+
+        if (personneAAnonymiser.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Personne personne = personneAAnonymiser.get();
+        personne.setNom("Anonyme");
+        personne.setPrenom("Anonyme");
+        personne.setEmail("anonyme_" + id + "@anonyme.local");
+        personne.setActif(false);
+
+        return Optional.of(personneDao.save(personne));
     }
  }

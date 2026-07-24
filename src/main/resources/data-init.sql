@@ -4,12 +4,12 @@ INSERT INTO profile(libelle_profile) VALUES
     ('STAGIAIRE'),
     ('INTERVENANT');
 
-INSERT INTO etat(libelle_etat) VALUES
-    ('Neuf'),
-    ('Bon état'),
-    ('Usé'),
-    ('En réparation'),
-    ('Hors service');
+INSERT INTO etat(libelle_etat, empruntable) VALUES
+    ('Neuf', true),
+    ('Bon état', true),
+    ('Dégradé', true),
+    ('En maintenance', false),
+    ('Hors service', false);
 
 INSERT INTO emplacement(libelle_emplacement) VALUES
     ('Salle 101'),
@@ -45,12 +45,12 @@ INSERT INTO type_document(libelle_type_document) VALUES
     ('Guide utilisateur');
 
 INSERT INTO personne(nom, prenom, email, actif, mot_de_passe) VALUES
-    ('Dupont', 'Jean', 'j.dupont@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
-    ('Martin', 'Sophie', 's.martin@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
-    ('Leroy', 'Marc', 'm.leroy@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
-    ('Bernard', 'Claire', 'c.bernard@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
-    ('Petit', 'Thomas', 't.petit@mns.fr', true, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m'),
-    ('Moreau', 'Julie', 'j.moreau@mns.fr', false, '$2y$10$z1Y7BkqLbL3rTn8.T0E5J.2yXMNkvDrgRTo.VATuN4s2murZOZ16m');
+    ('Dupont', 'Jean', 'j.dupont@mns.fr', true, '$2b$10$iUMXuaVEr9O.9lSDYgUJ7eRBIm11rOIoucy7Utb6YOuhoqMW6Uf6i'),
+    ('Martin', 'Sophie', 's.martin@mns.fr', true, '$2b$10$iUMXuaVEr9O.9lSDYgUJ7eRBIm11rOIoucy7Utb6YOuhoqMW6Uf6i'),
+    ('Leroy', 'Marc', 'm.leroy@mns.fr', true, '$2b$10$iUMXuaVEr9O.9lSDYgUJ7eRBIm11rOIoucy7Utb6YOuhoqMW6Uf6i'),
+    ('Bernard', 'Claire', 'c.bernard@mns.fr', true, '$2b$10$iUMXuaVEr9O.9lSDYgUJ7eRBIm11rOIoucy7Utb6YOuhoqMW6Uf6i'),
+    ('Petit', 'Thomas', 't.petit@mns.fr', true, '$2b$10$iUMXuaVEr9O.9lSDYgUJ7eRBIm11rOIoucy7Utb6YOuhoqMW6Uf6i'),
+    ('Moreau', 'Julie', 'j.moreau@mns.fr', false, '$2b$10$iUMXuaVEr9O.9lSDYgUJ7eRBIm11rOIoucy7Utb6YOuhoqMW6Uf6i');
 
 INSERT INTO profile_personne(personne_id, profile_id) VALUES
     (1, 1),

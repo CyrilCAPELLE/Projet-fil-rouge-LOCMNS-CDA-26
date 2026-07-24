@@ -25,4 +25,8 @@ public class Etat {
     @JsonView({EtatView.class, MaterielView.class})
     protected String libelleEtat;
 
+    @Column(nullable = false)
+    @JsonView({EtatView.class, MaterielView.class})
+    protected boolean empruntable;
+
 }
