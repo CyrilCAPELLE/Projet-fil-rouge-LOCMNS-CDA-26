@@ -35,4 +35,10 @@ public class GlobalExceptionHandler {
     public Map<String, String> handleDataIntegrity(DataIntegrityViolationException ex) {
         return Map.of("erreur", "Conflit avec une contrainte de la base de donnees");
     }
+
+    @ExceptionHandler(ConflitReservationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> handleConflitReservation(ConflitReservationException ex) {
+        return Map.of("erreur", ex.getMessage());
+    }
 }

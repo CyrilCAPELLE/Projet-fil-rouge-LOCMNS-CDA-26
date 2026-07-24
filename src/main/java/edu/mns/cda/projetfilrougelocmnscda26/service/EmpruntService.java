@@ -1,5 +1,6 @@
 package edu.mns.cda.projetfilrougelocmnscda26.service;
 
+import edu.mns.cda.projetfilrougelocmnscda26.config.ConflitReservationException;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.EmpruntDao;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.EtatDao;
 import edu.mns.cda.projetfilrougelocmnscda26.dao.MaterielDao;
@@ -71,7 +72,8 @@ public class EmpruntService {
         }
 
         if (!materiel.getEtat().isEmpruntable()) {
-            throw new IllegalArgumentException("Le matériel n'est pas empruntable (état actuel : " + materiel.getEtat().getLibelleEtat() + ")");
+            throw new IllegalArgumentException("Le matériel n'est pas empruntable (état actuel : "
+                    + materiel.getEtat().getLibelleEtat() + ")");
         }
 
         FamilleMateriel familleDuMateriel = materiel.getFamilleMateriel();
@@ -90,7 +92,7 @@ public class EmpruntService {
 
         List<Emprunt> chevauchements = empruntDao.findChevauchements(materielId, dateDebut, dateRetourPrevue);
         if (!chevauchements.isEmpty()) {
-            throw new IllegalArgumentException("Ce matériel est déjà réservé sur tout ou partie de la période demandée");
+            throw new ConflitReservationException("Ce matériel est déjà réservé sur tout ou partie de la période demandée");
         }
 
         Emprunt nouvelEmprunt = new Emprunt();
@@ -112,7 +114,8 @@ public class EmpruntService {
 
         if (!"EN_ATTENTE".equals(emprunt.getStatutDemande())) {
             throw new IllegalArgumentException(
-                    "Seules les demandes en attente peuvent être validées (statut actuel : " + emprunt.getStatutDemande() + ")"
+                    "Seules les demandes en attente peuvent être validées (statut actuel : "
+                            + emprunt.getStatutDemande() + ")"
             );
         }
 
@@ -127,26 +130,22 @@ public class EmpruntService {
 
     public Emprunt refuser(int empruntId, int adminId) {
 
-        // 1. Récupérer l'emprunt
         Emprunt emprunt = empruntDao.findById(empruntId)
                 .orElseThrow(() -> new IllegalArgumentException("Emprunt introuvable : " + empruntId));
 
-        // 2. Vérifier que la demande est bien en attente
         if (!"EN_ATTENTE".equals(emprunt.getStatutDemande())) {
             throw new IllegalArgumentException(
-                    "Seules les demandes en attente peuvent être refusées (statut actuel : " + emprunt.getStatutDemande() + ")"
+                    "Seules les demandes en attente peuvent être refusées (statut actuel : "
+                            + emprunt.getStatutDemande() + ")"
             );
         }
 
-        // 3. Récupérer l'administrateur qui refuse
         Personne admin = personneDao.findById(adminId)
                 .orElseThrow(() -> new IllegalArgumentException("Administrateur introuvable : " + adminId));
 
-        // 4. Appliquer le refus
         emprunt.setStatutDemande("REFUSEE");
         emprunt.setTraitePar(admin);
 
-        // 5. Sauvegarder
         return empruntDao.save(emprunt);
     }
 
@@ -161,7 +160,8 @@ public class EmpruntService {
 
         if (!"VALIDEE".equals(emprunt.getStatutDemande())) {
             throw new IllegalArgumentException(
-                    "Seuls les emprunts validés peuvent faire l'objet d'un retour (statut actuel : " + emprunt.getStatutDemande() + ")"
+                    "Seuls les emprunts validés peuvent faire l'objet d'un retour (statut actuel : "
+                            + emprunt.getStatutDemande() + ")"
             );
         }
 
@@ -216,5 +216,4 @@ public class EmpruntService {
         emprunt.setStatutDemande("ANNULEE");
         return empruntDao.save(emprunt);
     }
-
 }
