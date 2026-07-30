@@ -2,9 +2,9 @@ name: CI LOC MNS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop", "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop", "main" ]
   workflow_dispatch:
 
 jobs:
@@ -48,10 +48,10 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: docker-push
-    if: github.event_name == 'workflow_dispatch'
     steps:
-      - name: Pull et relance sur la VM
+      - name: Deploie sur la VM
         run: |
+          echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
           cd ~/locmns
           docker compose pull
           docker compose up -d
