@@ -52,7 +52,7 @@ class EmpruntIntegrationTest {
 
     @Test
     @WithUserDetails("j.dupont@mns.fr")
-    public void demanderUnMaterielDejaReserveSurLaPeriode_retourneCode400() throws Exception {
+    public void demanderUnMaterielDejaReserveSurLaPeriode_retourneCode409() throws Exception {
         Materiel materiel = new Materiel();
         materiel.setId(1);
 
@@ -66,6 +66,6 @@ class EmpruntIntegrationTest {
         mvc.perform(post("/emprunt/demande")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isConflict());
     }
 }

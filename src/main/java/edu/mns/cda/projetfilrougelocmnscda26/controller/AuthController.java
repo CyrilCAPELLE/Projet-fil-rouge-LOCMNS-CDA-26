@@ -51,6 +51,8 @@ public class AuthController {
                     .subject(personne.getEmail())
                     .claim("roles", roles)
                     .claim("id", personneDetails.getPersonne().getId())
+                    .claim("prenom", personneDetails.getPersonne().getPrenom())
+                    .claim("nom", personneDetails.getPersonne().getNom())
                     .expiration(new Date(System.currentTimeMillis() + 86400000))
                     .signWith(key)
                     .compact();
@@ -62,3 +64,4 @@ public class AuthController {
         }
     }
 }
+

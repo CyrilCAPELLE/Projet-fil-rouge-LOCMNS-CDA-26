@@ -50,7 +50,7 @@ public class MockPersonneDao implements PersonneDao {
     @Override public <S extends Personne> long count(Example<S> example) { return 0; }
     @Override public <S extends Personne> boolean exists(Example<S> example) { return false; }
     @Override public <S extends Personne, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) { return null; }
-    @Override public <S extends Personne> S save(S entity) { return null; }
+    @Override public <S extends Personne> S save(S entity) { return entity; }
     @Override public <S extends Personne> List<S> saveAll(Iterable<S> entities) { return List.of(); }
     @Override public boolean existsById(Integer integer) { return false; }
     @Override public List<Personne> findAll() { return List.of(); }
