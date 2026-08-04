@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleDataIntegrity(DataIntegrityViolationException ex) {
-        return Map.of("erreur", "Conflit avec une contrainte de la base de donnees");
+        return Map.of("erreur", "Conflit avec une contrainte de la base de données");
     }
 
     @ExceptionHandler(ConflitReservationException.class)
